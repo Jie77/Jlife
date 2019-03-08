@@ -4,10 +4,62 @@ const app = getApp()
 
 Page({
   data: {
-    motto: 'Hello World',
+    pageTitle: '列表信息',
     userInfo: {},
     hasUserInfo: false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo')
+    canIUse: wx.canIUse('button.open-type.getUserInfo'),
+
+    listInfo: [
+      {
+        title: '标题一',
+        desc: '呱呱呱呱呱'
+      },
+      {
+        title: '标题一',
+        desc: '呱呱呱呱呱'
+      },{
+        title: '标题一',
+        desc: '呱呱呱呱呱'
+      },{
+        title: '标题一',
+        desc: '呱呱呱呱呱'
+      },{
+        title: '标题一',
+        desc: '呱呱呱呱呱'
+      },{
+        title: '标题一',
+        desc: '呱呱呱呱呱'
+      },{
+        title: '标题一',
+        desc: '呱呱呱呱呱'
+      },{
+        title: '标题一',
+        desc: '呱呱呱呱呱'
+      },
+      {
+        title: '标题一',
+        desc: '呱呱呱呱呱'
+      },{
+        title: '标题一',
+        desc: '呱呱呱呱呱'
+      },{
+        title: '标题一',
+        desc: '呱呱呱呱呱'
+      },{
+        title: '标题一',
+        desc: '呱呱呱呱呱'
+      },{
+        title: '标题一',
+        desc: '呱呱呱呱呱'
+      },{
+        title: '标题一',
+        desc: '呱呱呱呱呱'
+      },{
+        title: '标题一',
+        desc: '呱呱呱呱呱'
+      }
+    ]
+
   },
   //事件处理函数
   bindViewTap: function() {
