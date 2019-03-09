@@ -5,7 +5,9 @@
       <view class="weui-panel weui-panel_access">
         <view class="weui-panel__hd">{{pageTitle}}</view>
         <view class="weui-panel__bd">
-          <view class="weui-media-box weui-media-box_text" wx:for="{{listInfo}}" >
+          <view class="weui-media-box weui-media-box_text" 
+                wx:for="{{listInfo}}" 
+                wx:key="{{item.id}}" >
             <view class="weui-media-box__title weui-media-box__title_in-text">{{item.title}}</view>
             <view class="weui-media-box__desc">{{item.desc}}</view>
           </view>

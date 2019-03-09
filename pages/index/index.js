@@ -12,51 +12,17 @@ Page({
     listInfo: [
       {
         title: '标题一',
-        desc: '呱呱呱呱呱'
+        desc: '呱呱呱呱呱',
+        id: 1
       },
       {
         title: '标题一',
-        desc: '呱呱呱呱呱'
+        desc: '呱呱呱呱呱',
+        id: 2
       },{
         title: '标题一',
-        desc: '呱呱呱呱呱'
-      },{
-        title: '标题一',
-        desc: '呱呱呱呱呱'
-      },{
-        title: '标题一',
-        desc: '呱呱呱呱呱'
-      },{
-        title: '标题一',
-        desc: '呱呱呱呱呱'
-      },{
-        title: '标题一',
-        desc: '呱呱呱呱呱'
-      },{
-        title: '标题一',
-        desc: '呱呱呱呱呱'
-      },
-      {
-        title: '标题一',
-        desc: '呱呱呱呱呱'
-      },{
-        title: '标题一',
-        desc: '呱呱呱呱呱'
-      },{
-        title: '标题一',
-        desc: '呱呱呱呱呱'
-      },{
-        title: '标题一',
-        desc: '呱呱呱呱呱'
-      },{
-        title: '标题一',
-        desc: '呱呱呱呱呱'
-      },{
-        title: '标题一',
-        desc: '呱呱呱呱呱'
-      },{
-        title: '标题一',
-        desc: '呱呱呱呱呱'
+        desc: '呱呱呱呱呱',
+        id:3
       }
     ]
 
