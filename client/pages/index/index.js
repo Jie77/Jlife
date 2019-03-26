@@ -4,24 +4,34 @@ const app = getApp()
 
 Page({
   data: {
-    pageTitle: '列表信息',
     userInfo: {},
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
-
+    
+    inputValue: '',  // keyword
+    pageTitle: '列表信息',
     listInfo: [
       {
         title: '标题一',
-        desc: '呱呱呱呱呱',
+        desc: '啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦阿拉啦啦啦啦',
+        price: 10,
+        exceptTime: '15:00 - 16:00',
+        validTime: '12:00 - 14:30',
         id: 1
       },
       {
-        title: '标题一',
+        title: '标题二',
         desc: '呱呱呱呱呱',
+        price: 10,
+        exceptTime: '15:00 - 16:00',
+        validTime: '',
         id: 2
       },{
-        title: '标题一',
+        title: '标题三',
         desc: '呱呱呱呱呱',
+        exceptTime: '15:00 - 16:00',
+        validTime: '12:00 - 14:30',
+        price: 10,
         id:3
       }
     ]
@@ -68,5 +78,33 @@ Page({
       userInfo: e.detail.userInfo,
       hasUserInfo: true
     })
+  },
+
+  bindKeyInput: function(e) {
+    this.setData({
+      inputValue: e.detail.value
+    })
+  },
+
+  handleConnectRes: function(e) {
+    wx.request({
+      url: "http://127.0.0.1:3000",
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      data: {
+        username: 'yaodan',
+        password: '123456'
+      },
+      success: function(res) {
+        console.log('success')
+        console.log(res)
+      },
+      fail: function(err) {
+        console.log(err)
+      }
+    })
   }
+
 })

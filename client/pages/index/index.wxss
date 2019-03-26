@@ -1,25 +1,43 @@
 /**index.wxss**/
 .index-container {
+  background: #F8F8F8;
+}
+
+.list-section {
   
 }
 
-.userinfo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.card-container {
+  color: rgb(94, 91, 91);
+  background: #fff;
+  box-sizing: border-box;
+  box-shadow: 0 0 2px #666;
+  margin: 0 auto;
+  margin-top: 20px;
+  padding: 15px;
 }
 
-.userinfo-avatar {
-  width: 128rpx;
-  height: 128rpx;
-  margin: 20rpx;
-  border-radius: 50%;
+.card-container .title {
+  font-weight: bolder;
+  font-size: 20px;
 }
 
-.userinfo-nickname {
-  color: #aaa;
+.content {
+  margin-bottom: 10px;
 }
 
-.usermotto {
-  margin-top: 200px;
+.content-time {
+  font-size: 13px;
+}
+
+.btn-container {
+  margin-top: 20px;
+  height: 35px;
+  width: 100%;
+  position: relative;
+}
+.btn-container button {
+  font-size: 13px;
+  width: 100px;
+  float: right;
 }
