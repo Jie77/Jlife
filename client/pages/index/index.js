@@ -33,6 +33,14 @@ Page({
         validTime: '12:00 - 14:30',
         price: 10,
         id:3
+      },
+      {
+        title: '标题四',
+        desc: '呱呱呱呱呱',
+        exceptTime: '15:00 - 16:00',
+        validTime: '12:00 - 14:30',
+        price: 10,
+        id:4
       }
     ]
 

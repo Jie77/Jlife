@@ -21,7 +21,8 @@
           <block wx:if="{{item.validTime}}">
             <view class="content-time">该信息有效时间: {{item.validTime}}</view>
           </block>
-          <view class="btn-container">
+          <view class="card-footer">
+            <view class="price">￥{{item.price}}</view>
             <button type="primary" bindtap="handleConnectRes" >联系他/她</button>
           </view>
         </view>
