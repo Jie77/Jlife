@@ -1,3 +1,50 @@
 .operation-container {
   
 }
+
+.container {
+  margin: 0 auto;
+  width: 300rpx;
+  margin-top: 100rpx;
+}
+
+.operation-shape {
+  background: green;
+  width: 300rpx;
+  height: 300rpx;
+  border-radius: 50%;
+}
+
+.post-request {
+  background: #1AAD19;
+}
+
+.notifycation {
+  background: rgb(63, 196, 236);
+  margin-top: 70rpx;
+  position: relative;
+}
+
+.text {
+  height: 300rpx;
+  line-height: 300rpx;
+  width: 300rpx;
+  text-align: center;
+  color: #fff;
+  font-weight: bolder;
+} 
+
+.notify-num {
+  position: absolute;
+  right: 20rpx;
+  top: 20rpx;
+  border-radius: 50%;
+  width: 40rpx;
+  height: 40rpx;
+  background: rgb(241, 20, 20);
+  color: #fff;
+  font-size: 25rpx;
+  line-height: 40rpx;
+  height: 40rpx;
+  text-align: center;
+}

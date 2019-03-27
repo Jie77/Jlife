@@ -1,5 +1,5 @@
 <view class="operation-container">
-  <view class="page_bd">
+  <!-- <view class="page_bd">
     <view class="weui-cells weui-cells_after-title">
       <view class="weui-cell" bindtap="toEditPage">
         <view class="weui-cell__hd">
@@ -13,6 +13,15 @@
         </view>
         <view class="weui-cell__bd">标题文字</view>
       </view>
+    </view>
+  </view> -->
+  <view class="container">
+    <view class="operation-shape post-request"  bindtap="toEditPage">
+      <view class="text">发请求</view>
+    </view>
+    <view class="operation-shape notifycation" bindtap="toNotifyPage">
+      <view class="text">消息</view>
+      <view class="notify-num">{{unReadNum}}</view>
     </view>
   </view>
 </view>
