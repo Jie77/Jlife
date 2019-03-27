@@ -8,6 +8,8 @@ Page({
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
     
+    JWT: '',
+    openid: '',
     inputValue: '',  // keyword
     pageTitle: '列表信息',
     listInfo: [
@@ -52,6 +54,26 @@ Page({
     })
   },
   onLoad: function () {
+    wx.login({
+      success(res) {
+        if(res.code) {
+          wx.request({
+            url: "http://127.0.0.1:3000/getJWT",
+            data: {
+              code: res.code
+            },
+            success: function(res) {
+              console.log(res);
+              console.log(res.data.openid);
+              app.globalData.openid = res.data.openid;
+              app.globalData.token = res.data.token;
+            }
+          })
+        } else {
+          console.log('登录失败')
+        }
+      }
+    })
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,
@@ -96,14 +118,14 @@ Page({
 
   handleConnectRes: function(e) {
     wx.request({
-      url: "http://127.0.0.1:3000",
+      url: "http://127.0.0.1:3000/test",
       method: 'POST',
       header: {
-        'content-type': 'application/x-www-form-urlencoded'
+        'content-type': 'application/x-www-form-urlencoded',
+        'Authorization': app.globalData.token
       },
       data: {
-        username: 'yaodan',
-        password: '123456'
+        openid: app.globalData.openid
       },
       success: function(res) {
         console.log('success')
@@ -113,6 +135,8 @@ Page({
         console.log(err)
       }
     })
+
+    
   }
 
 })
