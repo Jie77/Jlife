@@ -2,8 +2,8 @@ const Koa = require('koa');
 const koaBody = require('koa-body');
 const Router = require('koa-router');
 const cors = require('koa2-cors');
-const {insertOne, find, updateOne, deleteOne} = require('./db');
-const {getRequest, generateToken, verifyToken} = require('./util')
+const {insertOne, find, updateOne} = require('./db');
+const {getRequest, generateToken, auth} = require('./util')
 const app = new Koa();
 const router = new Router();
 
@@ -13,30 +13,96 @@ app.use(cors({
 }))
 
 router.get('/getJWT', async (ctx, next) => {
-  const res = await getRequest('https://api.weixin.qq.com/sns/jscode2session?appid=wx1de0e13666295217&secret=a4fe32a78507cf3061167c9fd6339cca&js_code='+ctx.query.code+'&grant_type=authorization_code');
+  const res = await getRequest('https://api.weixin.qq.com/sns/jscode2session?appid=wx1de0e13666295217&secret=e5e1ad245517f51d5ca2f564f51e6b98&js_code='+ctx.query.code+'&grant_type=authorization_code');
   const payload = {
     openid: res.data.openid
   }
+
+  //test
+  await insertOne('notifyInfo', {
+    openId1: {
+      order1: [
+        {
+          tel: 1233,
+          text: 'vavfv'
+        },
+        {
+          tel: 1313,
+          text: 'vavfvdsvfv'
+        }
+      ],
+      order2: [
+        {
+          tel: 2222233,
+          text: 'vavfv'
+        },
+        {
+          tel: 2222313,
+          text: 'vavfvdsvfv'
+        }
+      ]
+    },
+    openId2: {
+      order1: [
+        {
+          tel: 1233,
+          text: 'vavfv'
+        },
+        {
+          tel: 1313,
+          text: 'vavfvdsvfv'
+        }
+      ],
+      order2: [
+        {
+          tel: 2222233,
+          text: 'vavfv'
+        },
+        {
+          tel: 2222313,
+          text: 'vavfvdsvfv'
+        }
+      ]
+    }
+  })
+
+
+
+
   const token = await generateToken(payload, res.data.session_key);
   const userInfo = {
     openid: res.data.openid,
     session_key: res.data.session_key
   }
-  const result = await insertOne('userInfo', userInfo);
+  const ifExist = await find('userInfo', {openid: res.data.openid});
+  // 如果不存在用户记录
+  let result = null;
+  if(ifExist.res.length === 0) {
+    // 插入openid，以及对应的加密秘钥
+    result = await insertOne('userInfo', userInfo);
+  }else { 
+    // 如果存在用户的openid，由于每次登陆秘钥会修改，所以更新秘钥信息
+    result = await updateOne('userInfo', {openid: res.data.openid}, {session_key: res.data.session_key});
+  }
   if(result.status) {
     ctx.body = {
       token: token,
       openid: res.data.openid
     }
   }
+  
 })
 
 router.post('/test', async (ctx, next) => {
-  const openid = ctx.request.body.openid;
+  console.log(ctx.request.body)
+  const openid = ctx.request.body.publiserOpenid;
   const token = ctx.header.authorization;
-  const collection = await find('userInfo', {openid: openid});
-  const privateKey = collection.res[0].session_key;
-  const res = await verifyToken(privateKey, openid, token);
+  const ifAuth = await auth(openid, token);
+  console.log(ifAuth);
+})
+
+router.post('/submitOrder', async(ctx, next) => {
+  const res = await insertOne('userOrder',{...ctx.request.body});
   console.log(res);
 })
 

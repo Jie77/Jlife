@@ -1,7 +1,8 @@
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
+const { find } = require('../db');
 
-exports.getRequest = (url, option) => {
+const getRequest = (url, option) => {
   return new Promise((resolve, reject) => {
     axios.get(url, option).then((res) => {
       resolve(res);
@@ -11,7 +12,7 @@ exports.getRequest = (url, option) => {
   })
 }
 
-exports.generateToken = (payload, privateKey) => {
+const generateToken = (payload, privateKey) => {
   return new Promise((resolve, reject) => {
     jwt.sign(payload, privateKey, (err, token) => {
       if (err) {
@@ -23,7 +24,7 @@ exports.generateToken = (payload, privateKey) => {
   })
 }
 
-exports.verifyToken = (privateKey, openid, token) => {
+const verifyToken = (privateKey, openid, token) => {
   return new Promise((resolve, reject) => {
     jwt.verify(token, privateKey, (err, decoded) => {
       if (decoded.openid === openid) {
@@ -40,3 +41,17 @@ exports.verifyToken = (privateKey, openid, token) => {
     });
   })
 }
+
+const auth = async (openid, token) => {
+  console.log(openid)
+  const collection = await find('userInfo', {openid: openid});
+  console.log(collection)
+  const privateKey = collection.res[0].session_key;
+  const res = await verifyToken(privateKey, openid, token);
+  return res.status
+}
+
+exports.auth = auth;
+exports.verifyToken = verifyToken;
+exports.generateToken = generateToken;
+exports.getRequest = getRequest;
