@@ -17,58 +17,6 @@ router.get('/getJWT', async (ctx, next) => {
   const payload = {
     openid: res.data.openid
   }
-
-  //test
-  await insertOne('notifyInfo', {
-    openId1: {
-      order1: [
-        {
-          tel: 1233,
-          text: 'vavfv'
-        },
-        {
-          tel: 1313,
-          text: 'vavfvdsvfv'
-        }
-      ],
-      order2: [
-        {
-          tel: 2222233,
-          text: 'vavfv'
-        },
-        {
-          tel: 2222313,
-          text: 'vavfvdsvfv'
-        }
-      ]
-    },
-    openId2: {
-      order1: [
-        {
-          tel: 1233,
-          text: 'vavfv'
-        },
-        {
-          tel: 1313,
-          text: 'vavfvdsvfv'
-        }
-      ],
-      order2: [
-        {
-          tel: 2222233,
-          text: 'vavfv'
-        },
-        {
-          tel: 2222313,
-          text: 'vavfvdsvfv'
-        }
-      ]
-    }
-  })
-
-
-
-
   const token = await generateToken(payload, res.data.session_key);
   const userInfo = {
     openid: res.data.openid,

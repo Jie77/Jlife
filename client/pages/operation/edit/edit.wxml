@@ -3,7 +3,7 @@
     <view class="weui-cells weui-cells_after-title">
       <view class="weui-cell weui-cell_input">
         <view class="weui-cell__bd">
-          <input class="weui-input" placeholder="请输入文本" />
+          <input class="weui-input" placeholder="请输入文本" value="{{title}}"/>
         </view>
       </view>
     </view>
@@ -12,17 +12,59 @@
   <view class="weui-cells weui-cells_after-title">
     <view class="weui-cell">
       <view class="weui-cell__bd">
-        <textarea class="weui-textarea" placeholder="请输入文本" style="height: 3.3em" />
-        <view class="weui-textarea-counter">0/200</view>
+        <textarea class="weui-textarea" placeholder="请输入文本" style="height: 3.3em" value="{{detail}}"/>
+        <!-- <view class="weui-textarea-counter">0/200</view> -->
       </view>
     </view>
   </view>
 
+  <view class="weui-cells__title">期望执行时间</view>
+  <picker
+    mode="time"
+    value="{{exceptStartTime}}"
+    bindchange="handleExceptStartTimeChange"
+  >
+    <view class="picker">
+      开始时间: {{exceptStartTime}}
+    </view>
+  </picker>
+  <picker
+    mode="time"
+    value="{{exceptEndTime}}"
+    bindchange="handleExceptEndTimeChange"
+  >
+    <view class="picker">
+      结束时间: {{exceptEndTime}}
+    </view>
+  </picker>
+  <view class="weui-cells__title">信息有效时间</view>
+  <picker
+    mode="time"
+    value="{{validStartTime}}"
+    bindchange="handleValidStartTimeChange"
+  >
+    <view class="picker">
+      开始时间: {{validStartTime}}
+    </view>
+  </picker>
+  <picker
+    mode="time"
+    value="{{validEndTime}}"
+    bindchange="handleValidEndTimeChange"
+  >
+    <view class="picker">
+      结束时间: {{validEndTime}}
+    </view>
+  </picker>
+  <view class="weui-cells__title">价格</view>
   <view class="weui-cells weui-cells_after-title">
-    <view class="weui-cell weui-cell_select">
-      <view class="weui-cell__bd weui-cell__bd_in-select-before">
-        <input class="weui-input" placeholder="请输入号码" />
+    <view class="weui-cell weui-cell_input">
+      <view class="weui-cell__bd">
+        <input class="weui-input" placeholder="请输入价格" value="{{price}}"/>
       </view>
     </view>
   </view>
+
+  <button type="primary" bindtap="handleSubmit" >提交</button>
+
 </view>

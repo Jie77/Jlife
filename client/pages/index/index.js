@@ -15,34 +15,45 @@ Page({
     listInfo: [
       {
         title: '标题一',
-        desc: '啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦阿拉啦啦啦啦',
+        detail: '啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦阿拉啦啦啦啦',
         price: 10,
-        exceptTime: '15:00 - 16:00',
-        validTime: '12:00 - 14:30',
-        id: 1
+        exceptStartTime: '15:00',
+        exceptEndTime: '16:00',
+        validStartTime: '12:00',
+        validEndTime: '15:00',
+        orderId: 131312,
+        publiserOpenid: 'oj3sb5Jez996YRO702Dydau0OCnU'
       },
       {
         title: '标题二',
-        desc: '呱呱呱呱呱',
+        detail: '啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦阿拉啦啦啦啦',
         price: 10,
-        exceptTime: '15:00 - 16:00',
-        validTime: '',
-        id: 2
+        exceptStartTime: '15:00',
+        exceptEndTime: '16:00',
+        validStartTime: '12:00',
+        validEndTime: '15:00',
+        orderId: 131365,
+        publiserOpenid: 'oj3sb5Jez996YRO702Dydau0OCnU'
       },{
         title: '标题三',
-        desc: '呱呱呱呱呱',
-        exceptTime: '15:00 - 16:00',
-        validTime: '12:00 - 14:30',
+        detail: '啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦阿拉啦啦啦啦',
         price: 10,
-        id:3
-      },
-      {
+        exceptStartTime: '15:00',
+        exceptEndTime: '16:00',
+        validStartTime: '12:00',
+        validEndTime: '15:00',
+        orderId: 131387,
+        publiserOpenid: 'oj3sb5Jez996YRO702Dydau0OCnU'
+      },{
         title: '标题四',
-        desc: '呱呱呱呱呱',
-        exceptTime: '15:00 - 16:00',
-        validTime: '12:00 - 14:30',
+        detail: '啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦阿拉啦啦啦啦',
         price: 10,
-        id:4
+        exceptStartTime: '15:00',
+        exceptEndTime: '16:00',
+        validStartTime: '12:00',
+        validEndTime: '15:00',
+        orderId: 131363,
+        publiserOpenid: 'oj3sb5Jez996YRO702Dydau0OCnU'
       }
     ]
 
@@ -116,7 +127,8 @@ Page({
     })
   },
 
-  handleConnectRes: function(e) {
+  handleConnect: function(e) {
+    console.log(e.currentTarget.dataset)
     wx.request({
       url: "http://127.0.0.1:3000/test",
       method: 'POST',
@@ -125,7 +137,8 @@ Page({
         'Authorization': app.globalData.token
       },
       data: {
-        openid: app.globalData.openid
+        publiserOpenid: e.currentTarget.dataset.publiserOpenid,
+        orderId: e.currentTarget.dataset.orderId
       },
       success: function(res) {
         console.log('success')

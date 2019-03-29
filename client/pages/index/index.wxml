@@ -14,16 +14,17 @@
       <view wx:for="{{listInfo}}" wx:key="{{item.id}}">
         <view class="card-container">
           <view class="title">{{item.title}}</view>
-          <block wx:if="{{item.desc}}">
-            <view class="content">{{item.desc}}</view>
-          </block>
-          <view class="content-time">期望执行时间: {{item.exceptTime}}</view>
-          <block wx:if="{{item.validTime}}">
-            <view class="content-time">该信息有效时间: {{item.validTime}}</view>
-          </block>
+          <view class="content">{{item.detail}}</view>
+          <view class="content-time">期望执行时间: {{item.exceptStartTime}}-{{item.exceptEndTime}}</view>
+          <view class="content-time">该信息有效时间: {{item.validStartTime}}-{{item.validEndTime}}</view>
+          <view class="content-time">单号: {{item.orderId}}</view>
           <view class="card-footer">
             <view class="price">￥{{item.price}}</view>
-            <button type="primary" bindtap="handleConnectRes" >联系他/她</button>
+            <button type="primary" 
+                    data-order-id="{{item.orderId}}"
+                    data-publiser-openid="{{item.publiserOpenid}}"
+                    bindtap="handleConnect"  
+                    >联系他/她</button>
           </view>
         </view>
       </view>
