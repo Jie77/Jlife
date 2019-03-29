@@ -64,11 +64,11 @@ exports.find = async (collectionName, payload) => {
   }
 }
 
-exports.updateOne = async (collectionName, whereData, newData ) => {
+exports.updateOne = async (collectionName, whereData, updateDate ) => {
   try {
     const db = await connectDB();
     const dbase = db.db('Jlife');
-    const updateDate = {$set: newData};
+    // const updateDate = {$set: newData};
     return new Promise((resolve, reject) => {
       dbase.collection(collectionName).updateOne(whereData, updateDate, (err, res) => {
         if (err) {

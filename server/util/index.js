@@ -43,9 +43,7 @@ const verifyToken = (privateKey, openid, token) => {
 }
 
 const auth = async (openid, token) => {
-  console.log(openid)
   const collection = await find('userInfo', {openid: openid});
-  console.log(collection)
   const privateKey = collection.res[0].session_key;
   const res = await verifyToken(privateKey, openid, token);
   return res.status

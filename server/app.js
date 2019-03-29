@@ -13,7 +13,7 @@ app.use(cors({
 }))
 
 router.get('/getJWT', async (ctx, next) => {
-  const res = await getRequest('https://api.weixin.qq.com/sns/jscode2session?appid=wx1de0e13666295217&secret=e5e1ad245517f51d5ca2f564f51e6b98&js_code='+ctx.query.code+'&grant_type=authorization_code');
+  const res = await getRequest('https://api.weixin.qq.com/sns/jscode2session?appid=wx1de0e13666295217&secret=292726693fad4abaf677416cffa1e3a5&js_code='+ctx.query.code+'&grant_type=authorization_code');
   const payload = {
     openid: res.data.openid
   }
@@ -30,7 +30,7 @@ router.get('/getJWT', async (ctx, next) => {
     result = await insertOne('userInfo', userInfo);
   }else { 
     // 如果存在用户的openid，由于每次登陆秘钥会修改，所以更新秘钥信息
-    result = await updateOne('userInfo', {openid: res.data.openid}, {session_key: res.data.session_key});
+    result = await updateOne('userInfo', {openid: res.data.openid}, {$set: {session_key: res.data.session_key}});
   }
   if(result.status) {
     ctx.body = {
@@ -41,12 +41,66 @@ router.get('/getJWT', async (ctx, next) => {
   
 })
 
-router.post('/test', async (ctx, next) => {
-  console.log(ctx.request.body)
-  const openid = ctx.request.body.publiserOpenid;
+router.post('/postAdopterMessage', async (ctx, next) => {
+  const data = ctx.request.body;
   const token = ctx.header.authorization;
-  const ifAuth = await auth(openid, token);
-  console.log(ifAuth);
+  const ifAuth = await auth(data.publiserOpenid, token);
+  if(ifAuth) {
+    const ifExist = await find('notifyInfo', {openid: data.publiserOpenid, orderId: data.orderId});
+    // 如果用户不存在
+    console.log(ifExist)
+    if(ifExist.res.length === 0) {
+      const payload = {
+        openid: data.publiserOpenid,
+        orderId: data.orderId,
+        messages: [
+          {
+            adopterTel: data.adopterTel,
+            adopterMessage: data.adopterMessage,
+            isRead: false //标记是否已读
+          }
+        ]
+      }
+      const insertRes = await insertOne('notifyInfo', payload);
+      console.log(insertRes)
+      if (insertRes.status) {
+        ctx.body = {
+          status: true,
+          msg: '提交成功'
+        }
+      }else {
+        ctx.body = {
+          status: false,
+          msg: '提交失败'
+        }
+      }
+      
+    }else {
+      const whereData = {
+        openid: data.publiserOpenid,
+        orderId: data.orderId
+      }
+      const payload = {
+        adopterTel: data.adopterTel,
+        adopterMessage: data.adopterMessage,
+        isRead: false
+      }
+      const updateRes = await updateOne('notifyInfo', whereData, {$addToSet: {messages: payload}});
+      if (updateRes.status) {
+        ctx.body = {
+          status: true,
+          msg: '提交成功'
+        }
+      }else {
+        ctx.body = {
+          status: false,
+          msg: '提交失败'
+        }
+      }
+    }
+  }else{
+    ctx.throw(403)
+  }
 })
 
 router.post('/submitOrder', async(ctx, next) => {

@@ -5,7 +5,7 @@
       <view class="weui-cells weui-cells_after-title">
         <view class="weui-cell weui-cell_input">
           <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="请输入关键词" bindinput="bindKeyInput"/>
+            <input confirm-type="search" class="weui-input" placeholder="请输入关键词" bindinput="HandleKeyInput"/>
           </view>
         </view>
       </view>
@@ -23,10 +23,32 @@
             <button type="primary" 
                     data-order-id="{{item.orderId}}"
                     data-publiser-openid="{{item.publiserOpenid}}"
-                    bindtap="handleConnect"  
+                    bindtap="openDialog"  
                     >联系他/她</button>
           </view>
         </view>
+      </view>
+    </view>
+  </view>
+  <view class="mask" bindtap="closeDialog" wx:if="{{showDialog}}"></view>
+  <view class="dialog-container" wx:if="{{showDialog}}">
+    <view class="dialog-content">
+      <view class="dialog-form">
+        <view class="input-block">
+          <view class="form-title">联系方式</view>
+          <view class="input-container">
+            <input type="text" placeholder="务必输入有效信息" bindinput="handleTelInput" />
+          </view>
+        </view>
+        <view class="input-block">
+          <view class="form-title">留言</view>
+          <view class="input-container">
+            <textarea placeholder="诚恳的留言更容易被接单哦" bindinput="handleMessageInput" ></textarea>
+          </view>
+        </view>
+      </view>
+      <view class="dialog-bottom">
+        <button type="primary" bindtap="handleConnect">确定</button>
       </view>
     </view>
   </view>

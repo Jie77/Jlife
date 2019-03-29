@@ -1,6 +1,7 @@
 /**index.wxss**/
 .index-container {
   background: #F8F8F8;
+  position: relative;
 }
 
 .list-section {
@@ -49,4 +50,45 @@
   height: 35px;
   color: #1AAD19;
   font-size: 25px;
+}
+.mask{
+  background-color:#999;
+  opacity:0.5;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+.dialog-container {
+ 
+}
+.dialog-content {
+  width: 600rpx;
+  margin: 0 auto;
+  background: #fff;
+  padding: 30rpx;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 11;
+}
+.input-block {
+  margin-bottom: 20rpx;
+}
+.input-block .form-title {
+  color: rgb(80, 79, 79);
+  font-weight: bolder;
+  margin-bottom: 10rpx;
+}
+.input-block .input-container {
+  border: 1px solid #999;
+  padding: 20rpx;
+  font-size: 12px;
+}
+.input-block .input-container  textarea {
+  width: 100%;
+  height: 180rpx;
 }

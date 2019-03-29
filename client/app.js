@@ -8,8 +8,23 @@ App({
 
     // 登录
     wx.login({
-      success: res => {
-        // 发送 res.code 到后台换取 openId, sessionKey, unionId
+      success: (res) => {
+        if(res.code) {
+          wx.request({
+            url: "http://127.0.0.1:3000/getJWT",
+            data: {
+              code: res.code
+            },
+            success: (res) => {
+              console.log(res);
+              console.log(res.data.openid);
+              this.globalData.openid = res.data.openid;
+              this.globalData.token = res.data.token;
+            }
+          })
+        } else {
+          console.log('登录失败')
+        }
       }
     })
     // 获取用户信息

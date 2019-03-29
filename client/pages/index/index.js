@@ -7,10 +7,14 @@ Page({
     userInfo: {},
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
-    
+    showDialog: false,
     JWT: '',
     openid: '',
-    inputValue: '',  // keyword
+    keyWordValue: '',  // keyword
+    adopterTel: '',
+    adopterMessage: '',
+    publiserOpenid: '',
+    orderId: '',
     pageTitle: '列表信息',
     listInfo: [
       {
@@ -65,26 +69,6 @@ Page({
     })
   },
   onLoad: function () {
-    wx.login({
-      success(res) {
-        if(res.code) {
-          wx.request({
-            url: "http://127.0.0.1:3000/getJWT",
-            data: {
-              code: res.code
-            },
-            success: function(res) {
-              console.log(res);
-              console.log(res.data.openid);
-              app.globalData.openid = res.data.openid;
-              app.globalData.token = res.data.token;
-            }
-          })
-        } else {
-          console.log('登录失败')
-        }
-      }
-    })
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,
@@ -120,36 +104,86 @@ Page({
       hasUserInfo: true
     })
   },
-
-  bindKeyInput: function(e) {
+  HandleKeyInput: function(e) {
     this.setData({
-      inputValue: e.detail.value
+      keyWordValue: e.detail.value
     })
   },
-
+  handleTelInput: function(e) {
+    this.setData({
+      adopterTel: e.detail.value
+    })
+  },
+  handleMessageInput: function(e) {
+    this.setData({
+      adopterMessage: e.detail.value
+    })
+  },
   handleConnect: function(e) {
     console.log(e.currentTarget.dataset)
+    wx.showLoading({
+      title: '请求提交中...',
+    })
+    
     wx.request({
-      url: "http://127.0.0.1:3000/test",
+      url: "http://127.0.0.1:3000/postAdopterMessage",
       method: 'POST',
       header: {
         'content-type': 'application/x-www-form-urlencoded',
         'Authorization': app.globalData.token
       },
       data: {
-        publiserOpenid: e.currentTarget.dataset.publiserOpenid,
-        orderId: e.currentTarget.dataset.orderId
+        publiserOpenid: this.data.publiserOpenid,
+        orderId: this.data.orderId,
+        adopterTel: this.data.adopterTel,
+        adopterMessage: this.data.adopterMessage,
+        isRead: false //标记是否已读
       },
-      success: function(res) {
-        console.log('success')
-        console.log(res)
+      success: (res) => {
+        wx.hideLoading({})
+        wx.showToast({
+          title: '提交成功',
+          icon: 'success',
+          duration: 2000,
+          mask: true,
+          success: () => {
+            wx.showTabBar();
+            this.setData({
+              showDialog: false
+            })
+          }
+        })
       },
-      fail: function(err) {
+      fail: (err) => {
+        wx.hideLoading({})
+        wx.showToast({
+          title: '提交成功',
+          icon: 'cancel',
+          duration: 2000,
+          mask: true,
+          success: () => {
+            this.setData({
+              showDialog: false
+            })
+          }
+        })
         console.log(err)
       }
     })
-
-    
+  },
+  openDialog: function(e) {
+    wx.hideTabBar()
+    this.setData({
+      showDialog: true,
+      publiserOpenid: e.currentTarget.dataset.publiserOpenid,
+      orderId: e.currentTarget.dataset.orderId,
+    })
+  },
+  closeDialog: function() {
+    wx.showTabBar();
+    this.setData({
+      showDialog: false
+    })
   }
 
 })
