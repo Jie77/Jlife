@@ -25,7 +25,7 @@ router.get('/getJWT', async (ctx, next) => {
   const ifExist = await find('userInfo', {openid: res.data.openid});
   // 如果不存在用户记录
   let result = null;
-  if(ifExist.res.length === 0) {
+  if(ifExist.data.length === 0) {
     // 插入openid，以及对应的加密秘钥
     result = await insertOne('userInfo', userInfo);
   }else { 
@@ -103,9 +103,30 @@ router.post('/postAdopterMessage', async (ctx, next) => {
   }
 })
 
+router.get('/getAdopterMessage', async(ctx, next) => {
+  const openid = ctx.query.openid;
+  const res = await find('notifyInfo', {openid: openid});
+  ctx.body = {
+    status: true,
+    data: res.res
+  }
+})
+
 router.post('/submitOrder', async(ctx, next) => {
-  const res = await insertOne('userOrder',{...ctx.request.body});
-  console.log(res);
+  const res = await insertOne('orderLists',{...ctx.request.body});
+  ctx.body = {
+    status: true,
+    msg: '提交成功'
+  }
+})
+
+router.get('/getOrderList', async(ctx, next) => {
+  const res = await find('orderLists', {});
+  ctx.body = {
+    status: true,
+    msg: '获取成功',
+    data: res.data
+  }
 })
 
 app.use(router.routes())

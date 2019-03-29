@@ -16,50 +16,7 @@ Page({
     publiserOpenid: '',
     orderId: '',
     pageTitle: '列表信息',
-    listInfo: [
-      {
-        title: '标题一',
-        detail: '啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦阿拉啦啦啦啦',
-        price: 10,
-        exceptStartTime: '15:00',
-        exceptEndTime: '16:00',
-        validStartTime: '12:00',
-        validEndTime: '15:00',
-        orderId: 131312,
-        publiserOpenid: 'oj3sb5Jez996YRO702Dydau0OCnU'
-      },
-      {
-        title: '标题二',
-        detail: '啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦阿拉啦啦啦啦',
-        price: 10,
-        exceptStartTime: '15:00',
-        exceptEndTime: '16:00',
-        validStartTime: '12:00',
-        validEndTime: '15:00',
-        orderId: 131365,
-        publiserOpenid: 'oj3sb5Jez996YRO702Dydau0OCnU'
-      },{
-        title: '标题三',
-        detail: '啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦阿拉啦啦啦啦',
-        price: 10,
-        exceptStartTime: '15:00',
-        exceptEndTime: '16:00',
-        validStartTime: '12:00',
-        validEndTime: '15:00',
-        orderId: 131387,
-        publiserOpenid: 'oj3sb5Jez996YRO702Dydau0OCnU'
-      },{
-        title: '标题四',
-        detail: '啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦阿拉啦啦啦啦',
-        price: 10,
-        exceptStartTime: '15:00',
-        exceptEndTime: '16:00',
-        validStartTime: '12:00',
-        validEndTime: '15:00',
-        orderId: 131363,
-        publiserOpenid: 'oj3sb5Jez996YRO702Dydau0OCnU'
-      }
-    ]
+    listInfo: []
 
   },
   //事件处理函数
@@ -95,6 +52,35 @@ Page({
         }
       })
     }
+    wx.showLoading({
+      title: '数据获取中...',
+    })
+    wx.request({
+      url: "http://127.0.0.1:3000/getOrderList",
+      success: (res) => {
+        wx.hideLoading({});
+        wx.showToast({
+          title: '获取成功',
+          icon: 'success',
+          duration: 2000,
+          mask: true
+        });
+        console.log(res)
+        this.setData({
+          listInfo: res.data.data
+        })
+      },
+      fail: (err) => {
+        wx.hideLoading({});
+        wx.showToast({
+          title: '获取失败',
+          icon: 'cancel',
+          duration: 2000,
+          mask: true
+        })
+        console.log(err)
+      }
+    })
   },
   getUserInfo: function(e) {
     console.log(e)
@@ -157,7 +143,7 @@ Page({
       fail: (err) => {
         wx.hideLoading({})
         wx.showToast({
-          title: '提交成功',
+          title: '提交失败',
           icon: 'cancel',
           duration: 2000,
           mask: true,

@@ -53,7 +53,7 @@ exports.find = async (collectionName, payload) => {
           resolve({
             status: true,
             msg: '查询成功',
-            res: res
+            data: res
           });
         }
         db.close();

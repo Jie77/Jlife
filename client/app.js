@@ -16,10 +16,9 @@ App({
               code: res.code
             },
             success: (res) => {
-              console.log(res);
-              console.log(res.data.openid);
               this.globalData.openid = res.data.openid;
               this.globalData.token = res.data.token;
+              wx.setStorageSync('openid', res.data.openid)
             }
           })
         } else {

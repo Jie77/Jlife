@@ -3,7 +3,9 @@
     <view class="weui-cells weui-cells_after-title">
       <view class="weui-cell weui-cell_input">
         <view class="weui-cell__bd">
-          <input class="weui-input" placeholder="请输入文本" value="{{title}}"/>
+          <input class="weui-input" 
+                 placeholder="请输入文本" 
+                 bindinput="handleTitleChange" />
         </view>
       </view>
     </view>
@@ -12,7 +14,10 @@
   <view class="weui-cells weui-cells_after-title">
     <view class="weui-cell">
       <view class="weui-cell__bd">
-        <textarea class="weui-textarea" placeholder="请输入文本" style="height: 3.3em" value="{{detail}}"/>
+        <textarea class="weui-textarea" 
+                  placeholder="请输入文本" 
+                  style="height: 3.3em" 
+                  bindinput="handleDetailChange" />
         <!-- <view class="weui-textarea-counter">0/200</view> -->
       </view>
     </view>
@@ -60,7 +65,7 @@
   <view class="weui-cells weui-cells_after-title">
     <view class="weui-cell weui-cell_input">
       <view class="weui-cell__bd">
-        <input class="weui-input" placeholder="请输入价格" value="{{price}}"/>
+        <input class="weui-input" placeholder="请输入价格" bindinput="handlePriceChange"/>
       </view>
     </view>
   </view>

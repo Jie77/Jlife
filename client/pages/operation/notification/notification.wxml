@@ -1,0 +1,15 @@
+<view class="notification-container">
+  <view class="card-container" 
+        wx:for="{{notifications}}" 
+         wx:key="{{item.orderId}}">
+    <view class="card-content">
+      <view class="card-title">{{item.orderId}}</view>
+      <view class="card-userInfo" 
+            wx:for="{{item.messages}}" 
+            wx:key="{{item.messageId}}">
+        <view>{{item.adopterTel}}</view>
+        <view>{{item.adopterMessage}}</view>
+      </view>
+    </view>
+  </view>
+</view>
