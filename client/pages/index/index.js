@@ -159,6 +159,7 @@ Page({
   },
   openDialog: function(e) {
     wx.hideTabBar()
+    console.log(e.currentTarget.dataset)
     this.setData({
       showDialog: true,
       publiserOpenid: e.currentTarget.dataset.publiserOpenid,

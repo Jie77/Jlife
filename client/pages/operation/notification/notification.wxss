@@ -1,7 +1,29 @@
 .notification-container {
-
+  padding: 20px 10px;
+  background: #F8F8F8;
 }
 .card-container {
-  border: 1px solid #000;
   margin-bottom: 20px;
+  padding: 10px;
+  background: #fff;
+  box-shadow: 0 0 2px #666;
+}
+.card-title {
+  border-bottom: 1px solid #666;
+  font-size: 13px;
+  text-align: center;
+  padding: 10px;
+}
+.card-adopterInfo {
+  margin: 10px 0;
+  border: 1px solid #666;
+  color: rgb(80, 79, 79);
+  padding: 10px;
+}
+.card-adopterInfo-message {
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+.card-adopterInfo-tel {
+  font-size: 13px;
 }

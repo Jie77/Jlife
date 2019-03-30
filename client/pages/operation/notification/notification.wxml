@@ -3,12 +3,12 @@
         wx:for="{{notifications}}" 
          wx:key="{{item.orderId}}">
     <view class="card-content">
-      <view class="card-title">{{item.orderId}}</view>
-      <view class="card-userInfo" 
+      <view class="card-title">单号: {{item.orderId}}</view>
+      <view class="card-adopterInfo" 
             wx:for="{{item.messages}}" 
             wx:key="{{item.messageId}}">
-        <view>{{item.adopterTel}}</view>
-        <view>{{item.adopterMessage}}</view>
+        <view class="card-adopterInfo-message">{{item.adopterMessage}}</view>
+        <view class="card-adopterInfo-tel">联系方式: {{item.adopterTel}}</view>
       </view>
     </view>
   </view>
