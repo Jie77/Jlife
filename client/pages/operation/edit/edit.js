@@ -68,7 +68,8 @@ Page({
         price: this.data.price,
         orderId: generateOrderId(),
         publiserOpenid: app.globalData.openid,
-        isFinish: false
+        isFinish: false,
+        notifyNum: 0
       },
       success: (res) => {
         wx.hideLoading({});

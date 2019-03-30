@@ -14,7 +14,7 @@
         <button type="primary" 
                 bindtap="finishOrder" 
                 data-order-id="{{item.orderId}}" 
-                wx:if="{{item.isFinish === 'false'}}"
+                wx:if="{{!item.isFinish}}"
         >完成订单</button>
         <button disabled="true"
                 bindtap="finishOrder" 

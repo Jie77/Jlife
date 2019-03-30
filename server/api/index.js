@@ -34,13 +34,19 @@ const postAdopterMessage = async (ctx, next) => {
   const token = ctx.header.authorization;
   const ifAuth = await auth(data.adopterOpenid, token);
   if(ifAuth) {
+    const orderPayload = {
+      publiserOpenid: data.publiserOpenid,
+      orderId: data.orderId
+    }
+    const order = await find('orderLists', orderPayload);
+    let notifyNum =  order.data[0].notifyNum + 1; // 在更新语句中执行自加操作无效，所以提前加1
     const ifExist = await find('notifyInfo', {openid: data.publiserOpenid, orderId: data.orderId});
     // 如果用户不存在
     if(ifExist.data.length === 0) {
       const payload = {
         openid: data.publiserOpenid,
         orderId: data.orderId,
-        isFinish: data.isFinish,
+        isFinish: false,
         messages: [
           {
             adopterTel: data.adopterTel,
@@ -50,6 +56,7 @@ const postAdopterMessage = async (ctx, next) => {
         ]
       }
       const insertRes = await insertOne('notifyInfo', payload);
+      const updateNotifyNumRes =  await updateOne('orderLists', orderPayload, { $set: { notifyNum : notifyNum} });
       if (insertRes.status) {
         ctx.body = {
           status: true,
@@ -73,6 +80,7 @@ const postAdopterMessage = async (ctx, next) => {
         isRead: false
       }
       const updateRes = await updateOne('notifyInfo', whereData, {$addToSet: {messages: payload}});
+      const updateNotifyNumRes =  await updateOne('orderLists', orderPayload, { $set: { notifyNum : notifyNum} })
       if (updateRes.status) {
         ctx.body = {
           status: true,
@@ -93,22 +101,32 @@ const postAdopterMessage = async (ctx, next) => {
 const getAdopterMessage = async(ctx, next) => {
   const openid = ctx.query.openid;
   const res = await find('notifyInfo', {openid: openid});
-  ctx.body = {
-    status: true,
-    data: res.data
+  console.log(res)
+  if (res.status) {
+    ctx.body = {
+      status: true,
+      data: res.data
+    }
   }
 }
 
 const submitOrder = async(ctx, next) => {
-  const res = await insertOne('orderLists',{...ctx.request.body});
-  ctx.body = {
-    status: true,
-    msg: '提交成功'
+  const payload = {
+    ...ctx.request.body,
+    isFinish: false,
+    notifyNum: 0
+  }
+  const res = await insertOne('orderLists', payload);
+  if(res.status) {
+    ctx.body = {
+      status: true,
+      msg: '提交成功'
+    }
   }
 }
 
 const getOrderList  = async(ctx, next) => {
-  const res = await find('orderLists', {isFinish: "false"});
+  const res = await find('orderLists', {isFinish: false});
   console.log(res.data)
   ctx.body = {
     status: true,

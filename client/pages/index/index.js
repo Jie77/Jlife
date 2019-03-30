@@ -141,9 +141,12 @@ Page({
         wx.showToast({
           title: '提交成功',
           icon: 'success',
-          duration: 2000,
+          duration: 1000,
           mask: true,
           success: () => {
+            setTimeout(() => {
+              this.refresh()
+            }, 1000)
             wx.showTabBar();
             this.setData({
               showDialog: false

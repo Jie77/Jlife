@@ -18,6 +18,7 @@
           <view class="content-time">期望执行时间: {{item.exceptStartTime}}-{{item.exceptEndTime}}</view>
           <view class="content-time">该信息有效时间: {{item.validStartTime}}-{{item.validEndTime}}</view>
           <view class="content-time">单号: {{item.orderId}}</view>
+          <view class="content-time">候选人数: {{item.notifyNum}}</view>
           <view class="card-footer">
             <view class="price">￥{{item.price}}</view>
             <button type="primary" 
