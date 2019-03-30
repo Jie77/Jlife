@@ -32,15 +32,15 @@ const getJWT = async (ctx, next) => {
 const postAdopterMessage = async (ctx, next) => {
   const data = ctx.request.body;
   const token = ctx.header.authorization;
-  const ifAuth = await auth(data.publiserOpenid, token);
+  const ifAuth = await auth(data.adopterOpenid, token);
   if(ifAuth) {
     const ifExist = await find('notifyInfo', {openid: data.publiserOpenid, orderId: data.orderId});
     // 如果用户不存在
-    console.log(ifExist)
     if(ifExist.data.length === 0) {
       const payload = {
         openid: data.publiserOpenid,
         orderId: data.orderId,
+        isFinish: data.isFinish,
         messages: [
           {
             adopterTel: data.adopterTel,
@@ -50,7 +50,6 @@ const postAdopterMessage = async (ctx, next) => {
         ]
       }
       const insertRes = await insertOne('notifyInfo', payload);
-      console.log(insertRes)
       if (insertRes.status) {
         ctx.body = {
           status: true,
@@ -109,11 +108,31 @@ const submitOrder = async(ctx, next) => {
 }
 
 const getOrderList  = async(ctx, next) => {
-  const res = await find('orderLists', {});
+  const res = await find('orderLists', {isFinish: "false"});
+  console.log(res.data)
   ctx.body = {
     status: true,
     msg: '获取成功',
     data: res.data
+  }
+}
+
+const getUnreadNotifyNum = async(ctx, next) => {
+  // 待定。  数据库层级过深，批量修改有问题
+}
+
+const finishOrder = async(ctx, next) => {
+  console.log(ctx.request.body.orderId);
+  const whereData = {
+    orderId: ctx.request.body.orderId
+  }
+  const res1 = await updateOne('orderLists', whereData, {$set: {isFinish: true}});
+  const res2 = await updateOne('notifyInfo', whereData, {$set: {isFinish: true}});
+  if(res1.status && res2.status) {
+    ctx.body = {
+      status: true,
+      msg: '订单完成'
+    }
   }
 }
 
@@ -122,5 +141,7 @@ module.exports = {
   postAdopterMessage,
   getAdopterMessage,
   submitOrder,
-  getOrderList
+  getOrderList,
+  getUnreadNotifyNum,
+  finishOrder
 }

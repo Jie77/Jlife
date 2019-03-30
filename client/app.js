@@ -11,7 +11,7 @@ App({
       success: (res) => {
         if(res.code) {
           wx.request({
-            url: "http://127.0.0.1:3000/getJWT",
+            url: this.globalData.baseUrl + "/getJWT",
             data: {
               code: res.code
             },
@@ -50,6 +50,7 @@ App({
   globalData: {
     userInfo: null,
     openid: '',
-    token: ''
+    token: '',
+    baseUrl: 'http://192.168.5.107:3000'
   }
 })

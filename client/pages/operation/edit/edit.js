@@ -1,4 +1,6 @@
+const { generateOrderId } = require('../../../utils/util');
 const app = getApp()
+const baseUrl = app.globalData.baseUrl;
 
 Page({
   data: {
@@ -50,7 +52,7 @@ Page({
       title: '数据提交中...',
     })
     wx.request({
-      url: "http://127.0.0.1:3000/submitOrder",
+      url: baseUrl + "/submitOrder",
       method: 'POST',
       header: {
         'content-type': 'application/x-www-form-urlencoded',
@@ -64,11 +66,12 @@ Page({
         validStartTime: this.data.validStartTime,
         validEndTime: this.data.validEndTime,
         price: this.data.price,
-        orderId: Date.now(),
-        publiserOpenid: app.globalData.openid
+        orderId: generateOrderId(),
+        publiserOpenid: app.globalData.openid,
+        isFinish: false
       },
       success: (res) => {
-        wx.hideLoading({})
+        wx.hideLoading({});
         wx.showToast({
           title: '提交成功',
           icon: 'success',
@@ -76,6 +79,11 @@ Page({
           mask: true,
           success: () => {
             wx.showTabBar();
+            setTimeout(() => {
+              wx.switchTab({
+                url: '../../../pages/index/index'
+              })
+            }, 2000)
           }
         })
       },

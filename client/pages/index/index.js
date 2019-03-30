@@ -1,6 +1,7 @@
 //index.js
 //获取应用实例
-const app = getApp()
+const app = getApp();
+const baseUrl = app.globalData.baseUrl;
 
 Page({
   data: {
@@ -25,7 +26,8 @@ Page({
       url: '../logs/logs'
     })
   },
-  onLoad: function () {
+
+  refresh: function() {
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,
@@ -56,7 +58,7 @@ Page({
       title: '数据获取中...',
     })
     wx.request({
-      url: "http://127.0.0.1:3000/getOrderList",
+      url: baseUrl + "/getOrderList",
       success: (res) => {
         wx.hideLoading({});
         wx.showToast({
@@ -65,7 +67,6 @@ Page({
           duration: 2000,
           mask: true
         });
-        console.log(res)
         this.setData({
           listInfo: res.data.data
         })
@@ -81,6 +82,13 @@ Page({
         console.log(err)
       }
     })
+  },
+
+  onLoad: function () {
+    this.refresh()
+  },
+  onShow: function() {
+    this.refresh()
   },
   getUserInfo: function(e) {
     console.log(e)
@@ -112,7 +120,7 @@ Page({
     })
     
     wx.request({
-      url: "http://127.0.0.1:3000/postAdopterMessage",
+      url: baseUrl + "/postAdopterMessage",
       method: 'POST',
       header: {
         'content-type': 'application/x-www-form-urlencoded',
@@ -123,7 +131,10 @@ Page({
         orderId: this.data.orderId,
         adopterTel: this.data.adopterTel,
         adopterMessage: this.data.adopterMessage,
-        isRead: false //标记是否已读
+        isRead: false, //标记是否已读
+        adopterOpenid: app.globalData.openid,
+        messageId: Date.now(),
+        isFinish: false
       },
       success: (res) => {
         wx.hideLoading({})

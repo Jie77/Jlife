@@ -25,17 +25,22 @@ const generateToken = (payload, privateKey) => {
 }
 
 const verifyToken = (privateKey, openid, token) => {
+  console.log(privateKey)
+  console.log(token)
   return new Promise((resolve, reject) => {
     jwt.verify(token, privateKey, (err, decoded) => {
-      if (decoded.openid === openid) {
-        resolve({
-          status: true,
-          msg: 'success'
-        })
-      } else {
+      console.log(err)
+      console.log(decoded)
+      if(err) {
         reject({
           status: false,
           msg: '验证失败'
+        })
+      }
+      if (decoded && decoded.openid === openid) {
+        resolve({
+          status: true,
+          msg: 'success'
         })
       }
     });
@@ -44,7 +49,6 @@ const verifyToken = (privateKey, openid, token) => {
 
 const auth = async (openid, token) => {
   const collection = await find('userInfo', {openid: openid});
-  console.log(collection)
   const privateKey = collection.data[0].session_key;
   const res = await verifyToken(privateKey, openid, token);
   return res.status

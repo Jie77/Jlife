@@ -10,6 +10,19 @@
         <view class="card-adopterInfo-message">{{item.adopterMessage}}</view>
         <view class="card-adopterInfo-tel">联系方式: {{item.adopterTel}}</view>
       </view>
+      <view class="card-bottom">
+        <button type="primary" 
+                bindtap="finishOrder" 
+                data-order-id="{{item.orderId}}" 
+                wx:if="{{item.isFinish === 'false'}}"
+        >完成订单</button>
+        <button disabled="true"
+                bindtap="finishOrder" 
+                data-order-id="{{item.orderId}}" 
+                wx:else
+        >订单结束</button>
+
+      </view>
     </view>
   </view>
 </view>

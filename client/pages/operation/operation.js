@@ -1,4 +1,5 @@
-const app = getApp()
+const app = getApp();
+const baseUrl = app.globalData.baseUrl;
 
 Page({
   data: {
@@ -13,5 +14,13 @@ Page({
     wx.navigateTo({
       url: "notification/notification"
     })
-  }
+  },
+  // onShow: function() {
+  //   wx.request({
+  //     url: baseUrl + "/getUnreadNotifyNum",
+  //     success: (res) => {
+  //       console.log(res);
+  //     }
+  //   })
+  // }
 })

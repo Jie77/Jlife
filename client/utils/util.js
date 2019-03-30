@@ -6,7 +6,7 @@ const formatTime = date => {
   const minute = date.getMinutes()
   const second = date.getSeconds()
 
-  return [year, month, day].map(formatNumber).join('/') + ' ' + [hour, minute, second].map(formatNumber).join(':')
+  return [year, month, day].map(formatNumber).join('') + [hour, minute, second].map(formatNumber).join('');
 }
 
 const formatNumber = n => {
@@ -14,6 +14,11 @@ const formatNumber = n => {
   return n[1] ? n : '0' + n
 }
 
-module.exports = {
-  formatTime: formatTime
+const generateOrderId = () => {
+  const date = new Date();
+  const orderId = formatTime(date) + Math.floor(9999*Math.random());
+  return orderId;
 }
+
+exports.generateOrderId = generateOrderId;
+exports.formatTime = formatTime;

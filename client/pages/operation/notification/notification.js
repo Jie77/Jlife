@@ -1,9 +1,10 @@
 const app = getApp();
+const baseUrl = app.globalData.baseUrl;
 
 Page({
   data: {
     notifications: [],
-    openid: ''
+    openid: '',
   },
   onLoad: function() {
     const id = wx.getStorageSync('logs') || [];
@@ -16,7 +17,7 @@ Page({
       title: '数据获取中...',
     })
     wx.request({
-      url: "http://127.0.0.1:3000/getAdopterMessage",
+      url: baseUrl + "/getAdopterMessage",
       data: {
         openid: app.globalData.openid
       },
@@ -40,6 +41,46 @@ Page({
           duration: 2000,
           mask: true
         })
+        console.log(err)
+      }
+    })
+  },
+  finishOrder: function(e) {
+    const orderId = e.currentTarget.dataset.orderId;
+    wx.showLoading({
+      title: '请求提交中...',
+    })
+    wx.request({
+      url: baseUrl + "/finishOrder",
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded',
+        'Authorization': app.globalData.token
+      },
+      data: {
+        orderId: orderId
+      },
+      success: (res) => {
+        this.onLoad();
+        wx.hideLoading({});
+        if (res.data.status) {
+          wx.showToast({
+            title: '订单完成',
+            icon: 'success',
+            duration: 2000,
+            mask: true
+          })
+        }else {
+          wx.showToast({
+            title: '提交失败',
+            icon: 'cancel',
+            duration: 2000,
+            mask: true
+          })
+        }
+      },
+      fail: (err) => {
+        wx.hideLoading({})
         console.log(err)
       }
     })
