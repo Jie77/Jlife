@@ -30,17 +30,21 @@ const getJWT = async (ctx, next) => {
 }
 
 const postAdopterMessage = async (ctx, next) => {
+  const startTime = Date.now();
   const data = ctx.request.body;
   const token = ctx.header.authorization;
   const ifAuth = await auth(data.adopterOpenid, token);
+  console.log(`解码耗时：${Date.now() - startTime}`)
   if(ifAuth) {
     const orderPayload = {
       publiserOpenid: data.publiserOpenid,
       orderId: data.orderId
     }
     const order = await find('orderLists', orderPayload);
+    console.log(`第一次find：${Date.now() - startTime}`)
     let notifyNum =  order.data[0].notifyNum + 1; // 在更新语句中执行自加操作无效，所以提前加1
     const ifExist = await find('notifyInfo', {openid: data.publiserOpenid, orderId: data.orderId});
+    console.log(`第二次find：${Date.now() - startTime}`)
     // 如果用户不存在
     if(ifExist.data.length === 0) {
       const payload = {
@@ -80,7 +84,9 @@ const postAdopterMessage = async (ctx, next) => {
         isRead: false
       }
       const updateRes = await updateOne('notifyInfo', whereData, {$addToSet: {messages: payload}});
+      console.log(`第一次upDate：${Date.now() - startTime}`)
       const updateNotifyNumRes =  await updateOne('orderLists', orderPayload, { $set: { notifyNum : notifyNum} })
+      console.log(`第er次upDate：${Date.now() - startTime}`)
       if (updateRes.status) {
         ctx.body = {
           status: true,

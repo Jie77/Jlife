@@ -66,8 +66,10 @@ exports.find = async (collectionName, payload) => {
 
 exports.updateOne = async (collectionName, whereData, updateDate ) => {
   try {
+    const startTime = Date.now()
     const db = await connectDB();
     const dbase = db.db('Jlife');
+    console.log(`打开数据库的时间：${Date.now() - startTime}`)
     // const updateDate = {$set: newData};
     return new Promise((resolve, reject) => {
       dbase.collection(collectionName).updateOne(whereData, updateDate, (err, res) => {
