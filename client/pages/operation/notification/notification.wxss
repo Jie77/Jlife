@@ -7,6 +7,14 @@
   padding: 10px;
   background: #fff;
   box-shadow: 0 0 2px #666;
+  position: relative;
+}
+.remove-btn {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  right: 0px;
+  top: 5px
 }
 .card-title {
   border-bottom: 1px solid #666;

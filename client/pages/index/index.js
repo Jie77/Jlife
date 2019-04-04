@@ -84,7 +84,9 @@ Page({
     }
   },
   onShow: function() {
-    this.refresh()  // 第一次会报错，因为还没获取到openid
+    if(app.globalData.isGetToken) {
+      this.refresh()
+    }
   },
   getUserInfo: function(e) {
     console.log(e)

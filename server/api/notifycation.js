@@ -1,4 +1,4 @@
-const {find, updateOne} = require('../db');
+const {find, updateOne, remove} = require('../db');
 const {auth} = require('../util');
 
 exports.finishOrder = async(ctx, next) => {
@@ -44,6 +44,29 @@ exports.getAdopterMessage = async(ctx, next) => {
     ctx.body = {
       status: false,
       msg: '获取失败'
+    }
+  }
+}
+
+exports.removeOrder = async(ctx, next) => {
+  const token = ctx.header.authorization;
+  const ifAuth = await auth(ctx.request.body.openid, token);
+  if(!ifAuth) {
+    ctx.throw(403)
+  }
+  const whereData = {
+    orderId: ctx.request.body.orderId
+  }
+  const res = await remove('notifyInfo', whereData);
+  if(res.status) {
+    ctx.body = {
+      status: true,
+      msg: '删除成功'
+    }
+  }else {
+    ctx.body = {
+      status: false,
+      msg: '删除失败'
     }
   }
 }

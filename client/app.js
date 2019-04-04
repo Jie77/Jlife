@@ -19,6 +19,7 @@ App({
               if(res.data.status) {
                 this.globalData.openid = res.data.openid;
                 this.globalData.token = res.data.token;
+                this.globalData.isGetToken = true;
                 wx.setStorageSync('openid', res.data.openid);
                 this.userTokenReadyCallback()
               }else {
@@ -61,6 +62,7 @@ App({
     userInfo: null,
     openid: '',
     token: '',
+    isGetToken: false,
     // baseUrl: 'http://192.168.5.107:3000',
     baseUrl: 'http://127.0.0.1:3000'
     // baseUrl: "http://10.177.102.230:3000"

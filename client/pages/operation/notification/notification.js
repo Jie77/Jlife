@@ -27,13 +27,13 @@ Page({
   onLoad: function() {
     this.refresh() 
   },
-  finishOrder: function(e) {
+  handleOrder: function(path, e) {
     const orderId = e.currentTarget.dataset.orderId;
     wx.showLoading({
       title: '请求提交中...',
     })
     request({
-      path: '/finishOrder',
+      path: path,
       method: 'post',
       data: {
         orderId: orderId
@@ -46,5 +46,11 @@ Page({
         wx.hideLoading({})
       }
     })
+  },
+  finishOrder: function(e) {
+    this.handleOrder('/finishOrder', e);
+  },
+  removeOrder: function(e) {
+    this.handleOrder('/removeOrder', e);
   }
 })

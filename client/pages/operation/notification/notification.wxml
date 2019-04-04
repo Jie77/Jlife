@@ -2,6 +2,7 @@
   <view class="card-container" 
         wx:for="{{notifications}}" 
          wx:key="{{item.orderId}}">
+    <view class="remove-btn" bindtap="removeOrder" data-order-id="{{item.orderId}}" >X</view>
     <view class="card-content">
       <view class="card-title">单号: {{item.orderId}}</view>
       <view class="card-adopterInfo" 
