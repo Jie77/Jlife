@@ -16,9 +16,19 @@ App({
               code: res.code
             },
             success: (res) => {
-              this.globalData.openid = res.data.openid;
-              this.globalData.token = res.data.token;
-              wx.setStorageSync('openid', res.data.openid)
+              if(res.data.status) {
+                this.globalData.openid = res.data.openid;
+                this.globalData.token = res.data.token;
+                wx.setStorageSync('openid', res.data.openid);
+                this.userTokenReadyCallback()
+              }else {
+                wx.showToast({
+                  title: res.data.msg,
+                  icon: 'none',
+                  duration: 1000,
+                  mask: true
+                })
+              }
             }
           })
         } else {
@@ -51,6 +61,8 @@ App({
     userInfo: null,
     openid: '',
     token: '',
-    baseUrl: 'http://192.168.5.107:3000'
+    // baseUrl: 'http://192.168.5.107:3000',
+    baseUrl: 'http://127.0.0.1:3000'
+    // baseUrl: "http://10.177.102.230:3000"
   }
 })

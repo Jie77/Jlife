@@ -1,6 +1,6 @@
 const { generateOrderId } = require('../../../utils/util');
-const app = getApp()
-const baseUrl = app.globalData.baseUrl;
+const request = require('../../../utils/request');
+const app = getApp();
 
 Page({
   data: {
@@ -51,13 +51,9 @@ Page({
     wx.showLoading({
       title: '数据提交中...',
     })
-    wx.request({
-      url: baseUrl + "/submitOrder",
-      method: 'POST',
-      header: {
-        'content-type': 'application/x-www-form-urlencoded',
-        'Authorization': app.globalData.token
-      },
+    request({
+      path: '/submitOrder',
+      method: 'post',
       data: {
         title: this.data.title,
         detail: this.data.detail,
@@ -71,32 +67,16 @@ Page({
         isFinish: false,
         notifyNum: 0
       },
-      success: (res) => {
+      success: () => {
         wx.hideLoading({});
-        wx.showToast({
-          title: '提交成功',
-          icon: 'success',
-          duration: 2000,
-          mask: true,
-          success: () => {
-            wx.showTabBar();
-            setTimeout(() => {
-              wx.switchTab({
-                url: '../../../pages/index/index'
-              })
-            }, 2000)
-          }
-        })
+        setTimeout(() => {
+          wx.switchTab({
+            url: '../../../pages/index/index'
+          })
+        }, 2000)
       },
-      fail: (err) => {
-        wx.hideLoading({})
-        wx.showToast({
-          title: '提交失败',
-          icon: 'cancel',
-          duration: 2000,
-          mask: true
-        })
-        console.log(err)
+      fail: () => {
+        wx.hideLoading({});
       }
     })
   }

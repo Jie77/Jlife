@@ -2,13 +2,14 @@ const mongoose = require('mongoose');
 const { dbpath } = require('./config');
 
 mongoose.connect(dbpath, {useNewUrlParser: true});
-mongoose.connection('connected',()=>{
+const connection = mongoose.connection;
+connection.on('connected',()=>{
     console.log('connect success!');
 })
-mongoose.connection('error',(err)=>{
+connection.on('error',(err)=>{
     console.log(`connect error: ${err}`);
 })
-mongoose.connection('disconnected',()=>{
+connection.on('disconnected',()=>{
     console.log('connect disconnected');
 })
 

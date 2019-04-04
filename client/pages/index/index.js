@@ -2,6 +2,7 @@
 //获取应用实例
 const app = getApp();
 const baseUrl = app.globalData.baseUrl;
+const request = require('../../utils/request')
 
 Page({
   data: {
@@ -20,6 +21,9 @@ Page({
     listInfo: []
 
   },
+  onPullDownRefresh() {
+    this.refresh(wx.stopPullDownRefresh)
+  },
   //事件处理函数
   bindViewTap: function() {
     wx.navigateTo({
@@ -27,7 +31,28 @@ Page({
     })
   },
 
-  refresh: function() {
+  refresh: function(callback) {
+    wx.showLoading({})
+    request({
+      path: '/getOrderList',
+      success: (res) => {
+        wx.hideLoading({})
+        this.setData({
+          listInfo: res.data.data
+        })
+        if(typeof callback === 'function') {
+          callback();
+        }
+      },
+      fail: () => {
+        wx.hideLoading({})
+        if(typeof callback === 'function') {
+          callback();
+        }
+      },
+    })
+  },
+  onLoad: function () {
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,
@@ -54,41 +79,12 @@ Page({
         }
       })
     }
-    wx.showLoading({
-      title: '数据获取中...',
-    })
-    wx.request({
-      url: baseUrl + "/getOrderList",
-      success: (res) => {
-        wx.hideLoading({});
-        wx.showToast({
-          title: '获取成功',
-          icon: 'success',
-          duration: 2000,
-          mask: true
-        });
-        this.setData({
-          listInfo: res.data.data
-        })
-      },
-      fail: (err) => {
-        wx.hideLoading({});
-        wx.showToast({
-          title: '获取失败',
-          icon: 'cancel',
-          duration: 2000,
-          mask: true
-        })
-        console.log(err)
-      }
-    })
-  },
-
-  onLoad: function () {
-    this.refresh()
+    app.userTokenReadyCallback = () => {
+      this.refresh()
+    }
   },
   onShow: function() {
-    this.refresh()
+    this.refresh()  // 第一次会报错，因为还没获取到openid
   },
   getUserInfo: function(e) {
     console.log(e)
@@ -118,14 +114,9 @@ Page({
     wx.showLoading({
       title: '请求提交中...',
     })
-    
-    wx.request({
-      url: baseUrl + "/postAdopterMessage",
-      method: 'POST',
-      header: {
-        'content-type': 'application/x-www-form-urlencoded',
-        'Authorization': app.globalData.token
-      },
+    request({
+      path: '/postAdopterMessage',
+      method: 'post',
       data: {
         publiserOpenid: this.data.publiserOpenid,
         orderId: this.data.orderId,
@@ -136,38 +127,21 @@ Page({
         messageId: Date.now(),
         isFinish: false
       },
-      success: (res) => {
-        wx.hideLoading({})
-        wx.showToast({
-          title: '提交成功',
-          icon: 'success',
-          duration: 1000,
-          mask: true,
-          success: () => {
-            setTimeout(() => {
-              this.refresh()
-            }, 1000)
-            wx.showTabBar();
-            this.setData({
-              showDialog: false
-            })
-          }
+      success: () => {
+        wx.hideLoading({});
+        setTimeout(() => {
+          this.refresh()
+        }, 1000)
+        wx.showTabBar();
+        this.setData({
+          showDialog: false
         })
       },
-      fail: (err) => {
+      fail: () => {
         wx.hideLoading({})
-        wx.showToast({
-          title: '提交失败',
-          icon: 'cancel',
-          duration: 2000,
-          mask: true,
-          success: () => {
-            this.setData({
-              showDialog: false
-            })
-          }
+        this.setData({
+          showDialog: false
         })
-        console.log(err)
       }
     })
   },
